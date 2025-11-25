@@ -43,13 +43,24 @@ body{
 }
 
 .grid-item {
-    background: rgba(255, 255, 255, 0.95);
+    background: #ffffff;
     border: solid 1px #ccc;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: background-color 0.1s;
+}
+
+.grid-item {
+    position: relative;
+}
+
+.grid-item .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0);
+    pointer-events: none;
 }
 
 
