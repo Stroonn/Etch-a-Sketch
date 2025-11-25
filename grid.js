@@ -1,10 +1,26 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const gridContainer = document.getElementById('grid-container');
-    const createGridBtn = document.getElementById('create-grid-btn');
-    const gridSizeInput = document.getElementById('grid-size');
-    const resetGridBtn = document.getElementById('reset-grid-btn');
+/*
+    grid.js
 
-    if (!gridContainer || !createGridBtn || !gridSizeInput) return;
+    Simple Etch-a-Sketch grid controller.
+    - Creates a square grid inside `#grid-container` (960px fixed via CSS).
+    - User chooses number of cells via the input and clicks "Criar Grid".
+    - Each cell starts white. On each mouseover the cell gets an
+        additional black overlay (10% more opaque per pass). After 10 passes
+        the cell is fully black.
+    - A Reset button recreates the grid (clears to white).
+
+    Comments in this file are in English. Alternative coloring methods are
+    preserved as commented code for reference.
+*/
+
+document.addEventListener('DOMContentLoaded', () => {
+        const gridContainer = document.getElementById('grid-container');
+        const createGridBtn = document.getElementById('create-grid-btn');
+        const gridSizeInput = document.getElementById('grid-size');
+        const resetGridBtn = document.getElementById('reset-grid-btn');
+
+        // If basic controls or container are missing, stop early.
+        if (!gridContainer || !createGridBtn || !gridSizeInput) return;
 
     // --- Alternative method (commented) ---------------------------------------
     // Below was an approach that generated a random, 
@@ -38,10 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const gridItem = document.createElement('div');
             gridItem.className = 'grid-item';
 
-            // cor base inicial: branco (também usado no reset)
+            // initial base color: white (also used on reset).
             gridItem.style.backgroundColor = '#ffffff';
 
-            // overlay preto que controla a escuridão via alpha (opacidade)
+            // Black overlay that controls darkness via alpha (opacity).
             const overlay = document.createElement('div');
             overlay.className = 'overlay';
             overlay.style.background = 'rgba(0,0,0,0)';
@@ -51,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             //To use the alternative method of coloring cells, 
             // uncomment this part of the code in addition to the 
             // getRandomDarkColor function and comment out the event below.
-            
+
             let passCount = 0;
 
             gridItem.addEventListener('mouseover', () => {
@@ -70,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             gridItem.addEventListener('mouseover', () => {
                 passCount = Math.min(10, passCount + 1);
-                const alpha = passCount / 10; // 0.1 por vez
+                const alpha = passCount / 10; // 0.1 per pass
                 overlay.style.background = `rgba(0,0,0,${alpha})`;
                 if (passCount >= 10) {
                     overlay.style.background = 'rgba(0,0,0,1)';
@@ -86,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         createGrid(columns);
     });
 
-    // Reset: recria o grid com o mesmo tamanho (limpa cores)
     if (resetGridBtn) {
         resetGridBtn.addEventListener('click', () => {
             const columns = parseInt(gridSizeInput.value) || 5;
